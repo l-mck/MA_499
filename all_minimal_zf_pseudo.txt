@@ -1,0 +1,9 @@
+all_minimal_zf(graph G):
+  results = []
+  generator(G, G.vertices(), results)
+  return results
+
+generator(graph G, list s, list results):
+  if s is zf
+  then for all v in s, generator(G, s-v, results)
+  else results += s+v 
