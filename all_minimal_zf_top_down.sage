@@ -11,10 +11,23 @@ def all_minimal_zf(G):
 in: graph G, int r (removed vertex), list s (of vertices), list of lists results
 out: void, updates results recursively
 """
-def generator(G, r, s, results):
-    print("s: " + str(s) + ", r: " + str(r))
+def generator(s, G)
+    results = []
+    while(s.length != 0):
+        if is_zf(s,G):
+            if is_minimal(s,G): results.append(s)
+            else: 
+
     if is_zf(s,G):
-        print("s is zf")
+        if is_minimal(s,G): results.append(s)
+        else: for v in s: generator(G,v,s.remove(v),results)
+    else: end
+    
+
+
+
+def generator(G, r, s, results):
+    if is_zf(s,G):
         for v in s:
             s_edit = s.copy()
             print("s_edit: " + str(s_edit))
