@@ -1,29 +1,32 @@
 """
-in: set s, graph G
+in: list s, graph G
 out: boolean, is s zf set of G
-com: worst: blue = end point, G = path => O(n^2)
-     best: blue = all but one, G = any graph => O(n)
+com: worst: O(n^3)
 """
-def is_zf(blue, G):
+def is_zf(blue, bsize, G):
     forced = True
-        # initialize value "forced"
+    counter = 0
     
-    while set(blue) != set(G.vertices()) and forced == True:
-        # while there are white vertices and at least one force occurred on prior iteration
-        # - if there are no white vertices, set is zf
-        # - if no forces occurred on the last iteration, it is impossible for a force to occur
-        #    this iteration, so break to prevent infinite loop
+    while forced == True:
+        # while at least one force occurred on prior iteration
         forced = False
             # set forced equal to false
         for v in blue:
             # for each blue vertex v
             white_neighbors = [u for u in G.neighbors(v,False) if u not in blue]
                 # calculate its white neighbors
+                # for u O(n), not in blue O(n)
             if len(white_neighbors) == 1:
                 # if v has 1 white neighbor u
                 blue.append(white_neighbors[0])
-                forced == True
+                forced = True
                     # v forces u blue
+                counter += 1
+                    # increment counter
                     
-    if set(blue) != set(G.vertices()): return False 
-    else: return True
+    
+    reset(blue,counter)
+        # reset blue O(counter)
+    if counter == len(G) - bsize: return True 
+        # if num of forces == num of white vertices, blue is zf
+    else: return False
