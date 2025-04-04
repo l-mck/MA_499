@@ -1,6 +1,6 @@
 """
-in: list s, graph G
-out: boolean, is s zf set of G
+in: list blue, int bsize (size of blue), graph G
+out: boolean, is blue zf set of G
 com: worst: O(n^3)
 """
 def is_zf(blue, bsize, G):
