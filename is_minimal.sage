@@ -1,16 +1,19 @@
 """
-in: list blue (zf), graph G
+in: set blue, int bsize, graph G
 out: boolean, is blue minimal
-com: runs blue.vertices() times, is_zf is O(n) or O(n^2)
-    => worst is O(n^3)
+com: runs n times, is_zf is O(n^3) => O(n^4)
 """
-def is_minimal(blue, G):
-    for v in blue:
-        # for each blue vertex v
-        blue.remove(v)
-        if is_zf(blue,G): return False
-            # if given set w/o v is zf, not minimal
-        else: blue.append(v)
-            # otherwise, re-add v and try next blue vertex
-    return True
-        # if never return false, must be minimal
+def is_minimal(blue, bsize, G):
+    result = True
+    # init result to True
+    while result == True and bsize > 0:
+        # run unless result turns to false or bsize decrements to 0
+        v = blue.pop()
+            # remove head of set and assign to v O(1)
+        if is_zf(list(blue),len(blue),G): result = False
+            # if blue is zf, result is now false O(??)
+        blue.add(v)
+            # reset blue
+        bsize -= 1
+            # decrement counter
+    return result
