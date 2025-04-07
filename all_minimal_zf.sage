@@ -39,7 +39,6 @@ def is_zf(blue, bsize, G):
                 numForces += 1
                     # increment counter
                     
-    
     reset(blue,numForces)
         # reset blue O(counter)
     if numForces == len(G) - bsize: return True 
@@ -55,7 +54,7 @@ com: runs n times, is_zf is O(n^3) => O(n^4)
 
 def is_minimal(blue, bsize, G):
     result = True
-    # init result to True
+        # init result to True
     while result == True and bsize > 0:
         # run unless result turns to false or bsize decrements to 0
         v = blue.pop()
@@ -68,35 +67,61 @@ def is_minimal(blue, bsize, G):
             # decrement counter
     return result
 
-def find_z(s, ssize, G):  
-    maxz = G.len()-1
+"""
+in: list pset, graph G
+out: tbd
+func: finds z and min zf set
+com: tbd
+"""
+def find_z(pset, G): 
+    # initialize return values to largest z and zset
+    z = len(G.vertices())
+    zset = G.vertices()
     
-    while ssize > 0:
+    for s in pset:
+        if len(s) > 1:
+            """for trees, no zset can be just 1 vertex"""
+            if is_zf(s, len(s), G):
+                # if it is zf, we found min bc pset ordered by length
+                z = len(s)
+                zset = s
+                break
+    
+    return [z,zset]
+        
+"""
+in: list pset, graph G
+out: tbd
+func: finds zbar and maximum minimal zf set
+com: tbd
+"""
+def find_zbar(pset, G):
+    # initialize return values to smallest z and zset
+    zbar = 0
+    zbarset = []
+    
+    while len(pset) > 0:
         # while still subsets to check
-        subset = s.pop()
-            # check first subset
-        if subset.len() < maxz:
-            if is_zf(subset, subset.len(), G):
-                # if it is zf
-
-                # TODO: remove all supersets of s
-                maxz = subset.len()
-                    # update maxz
-        ssize -= 1
+        s = pset.pop(-1)
+            # check last subset
+        if is_minimal(set(s), len(s), G) and is_zf(s,len(s),G):
+                # if it is minimal zf, we found largest bc pset ordered by length
+                zbar = len(s)
+                zbarset = s
+                break
+                    
+        #TEST IF WE CAN REMOVE ELEMENTS OF PSET AND DECREMENT THAT WAY 
+        #psize -= 1
             # decrement amt of subsets left to check
         
-    return [maxz,G]
-        # return max size if no return made prior
-        # FIX, SHOULD RETURN G-v NOT G
-        
-
-def find_zbar(s,G):
-    print("made it!")
-    return 100
+    return [zbar,zbarset]
     
-  
-    
-
+"""
+in: graph G
+out: int zbar-z
+func: calculates gap between zf num and max minimal zf set
+com: tbd
+"""
 def gap(G):
     pset = []
         # set of tuples of all subsets
@@ -107,28 +132,21 @@ def gap(G):
     zset = []
         # init min zf set
         
-    # adapted from GFG "Print All Sublists of a List in Python" 2/8/25
+    # adapted from GFG "??"
     pset = [list(combinations(G.vertices(), r)) for r in range(1, len(G.vertices()) + 1)]  
     pset = [list(sublist) for g in pset for sublist in g] 
+        
+    # finds min zf num and min zf set
+    [z,zset] = find_z(pset, G)
+
+    # finds zbar num and max minimal zf sets
+    [zbar, zbarset] = find_zbar(pset,G)
     
-    
-    return pset
-            
-    
-    #[z,zset] = find_z(s, s.cardinality(), G)
-        # finds min zf num and min zf set
-    
-    # REMOVE ALL SUPERSETS OF ZSET
-    
-    #zbar = find_zbar(s,G)
-        # finds max minimal zf set size
-    #return zbar-z
-        # returns difference
+    return zbar-z
     
 
 
 
 g = graphs.BalancedTree(2,2)
 g.plot().show()
-s = gap(g)
-print(s)
+print(gap(g))
