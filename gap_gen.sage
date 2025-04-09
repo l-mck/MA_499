@@ -142,11 +142,24 @@ def gap(G):
     # finds zbar num and max minimal zf sets
     [zbar, zbarset] = find_zbar(pset,G)
     
-    return zbar-z
+    return [zbar-z,str(zbarset) + " - " + str(zset) + " = " + str(zbar-z)]
+
+
+from sage.graphs.trees import TreeIterator
+
+def largest_gap(n):
+    maxgap = [0,""]
+    for t in TreeIterator(n):
+        tval = gap(t)
+        if tval[0] > maxgap[0]:
+            maxgap[0] = tval[0]
+            maxgap[1] = tval[1]
+            maxtree = t
+        
+    maxtree.plot().show()
+    print(maxgap[1])
     
-
-
-
-g = graphs.BalancedTree(2,2)
-g.plot().show()
-print(gap(g))
+def all_gaps(n):
+    for t in TreeIterator(n):
+        t.plot().show()
+        print(gap(t)[1])
